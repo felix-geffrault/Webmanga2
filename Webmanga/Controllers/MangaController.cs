@@ -71,20 +71,24 @@ namespace Webmanga.Controllers
                 return HttpNotFound();
             }
         }
-        /*public ActionResult Ajouter()
+
+        public ActionResult Ajouter()
         {
-            Manga unManga = null;
             try
             {
-                unManga = ServiceManga.Get();
+                System.Data.DataTable genres = ServiceGenre.GetGenre();
                 return View();
             }
             catch (MonException e)
             {
                 return HttpNotFound();
             }
-        }*/
+        }
 
+        [HttpPost]
+        public ActionResult Ajouter(Manga unM){
+        
+        }
 
     }
 }

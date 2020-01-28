@@ -37,7 +37,7 @@ namespace Webmanga.Models.Dao
         public static void AddDessinateur(Dessinateur d)
         {
             Serreurs er = new Serreurs("Erreur sur l'ajout d'un dessinateur.", "ServiceDessinateur.AddDessinateur()");
-            String requete = "INSERT INTO dessinateur VALUES ( " + d.Nom_dessinateur + " , " + d.Prenom_dessinateur;
+            String requete = "INSERT INTO dessinateur ( nom_dessinateur, prenom_dessinateur ) VALUES ( " + d.Nom_dessinateur + " , " + d.Prenom_dessinateur +")";
             try
             {
                 DBInterface.Insertion_Donnees(requete);

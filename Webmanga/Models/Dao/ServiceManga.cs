@@ -97,11 +97,32 @@ namespace Webmanga.Models.Dao
                 throw erreur;
             }
         }
-
+        
         public static void DelManga(String id)
         {
             Serreurs er = new Serreurs("Erreur sur la suppression d'un manga.", "ServiceManga.DelManga()");
             String requete = "DELETE FROM Manga WHERE id_manga = " + id;
+            try
+            {
+                DBInterface.Insertion_Donnees(requete);
+            }
+            catch (MonException erreur)
+            {
+                throw erreur;
+            }
+        }
+
+        public static void AddManga(Manga unM){
+         Serreurs er = new Serreurs("Erreur sur l'ajout d'un manga.", "ServiceManga.AddManga()");
+            String requete = "INSERT INTO Manga VALUES ( " +
+                                  "id_scenariste = " + unM.Id_scenariste +
+                                  ", id_dessinateur = " + unM.Id_dessinateur +
+                                  ", id_genre = " + +unM.Id_genre +
+                                  ", titre = '" + unM.Titre + "'" +
+                                   ", Prix = " + unM.Prix +
+                                     ", dateParution = '" + FonctionsUtiles.DateToString(unM.DateParution) + "'" +
+                                   ",couverture = '" + unM.Couverture + "'" +
+                                   " WHERE id_manga =" + unM.Id_manga +")";
             try
             {
                 DBInterface.Insertion_Donnees(requete);

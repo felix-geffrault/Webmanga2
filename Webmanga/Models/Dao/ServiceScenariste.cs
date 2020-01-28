@@ -37,7 +37,7 @@ namespace Webmanga.Models.Dao
         public static void AddScenariste(Scenariste s)
         {
             Serreurs er = new Serreurs("Erreur sur l'ajout d'un scenariste.", "ServiceScenariste.AddScenariste()");
-            String requete = "INSERT INTO scenariste VALUES ( " + s.Nom_scenariste +" , " + s.Prenom_scenariste;
+            String requete = "INSERT INTO scenariste ( nom_scenariste, prenom_scenariste ) VALUES ( " + s.Nom_scenariste +" , " + s.Prenom_scenariste + ")";
             try
             {
                 DBInterface.Insertion_Donnees(requete);
