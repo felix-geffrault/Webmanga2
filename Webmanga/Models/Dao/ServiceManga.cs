@@ -113,16 +113,15 @@ namespace Webmanga.Models.Dao
         }
 
         public static void AddManga(Manga unM){
-         Serreurs er = new Serreurs("Erreur sur l'ajout d'un manga.", "ServiceManga.AddManga()");
-            String requete = "INSERT INTO Manga VALUES ( " +
-                                  "id_scenariste = " + unM.Id_scenariste +
-                                  ", id_dessinateur = " + unM.Id_dessinateur +
-                                  ", id_genre = " + +unM.Id_genre +
-                                  ", titre = '" + unM.Titre + "'" +
-                                   ", Prix = " + unM.Prix +
-                                     ", dateParution = '" + FonctionsUtiles.DateToString(unM.DateParution) + "'" +
-                                   ",couverture = '" + unM.Couverture + "'" +
-                                   " WHERE id_manga =" + unM.Id_manga +")";
+            Serreurs er = new Serreurs("Erreur sur l'ajout d'un manga.", "ServiceManga.AddManga()");
+            String requete = "INSERT INTO manga (id_scenariste, id_dessinateur, id_genre, titre, Prix, dateParution, couverture) VALUES ( " +
+                                  unM.Id_scenariste +
+                                  ", " + unM.Id_dessinateur +
+                                  ", '" + +unM.Id_genre + "'" +
+                                  ", '" + unM.Titre + "'" +
+                                  ", " + unM.Prix +
+                                  ", '" + FonctionsUtiles.DateToString(unM.DateParution) + "'" +
+                                  ", '" + unM.Couverture + "' )";
             try
             {
                 DBInterface.Insertion_Donnees(requete);

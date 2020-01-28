@@ -1,6 +1,6 @@
 ﻿
-@model  Webmanga.Models.Metier.Manga
-
+@model  System.Data.DataTable
+@using System.Data;
 @{
     ViewBag.Title = "Ajouter";
     Layout = "~/Views/Shared/_LayoutManga.cshtml";
@@ -8,30 +8,29 @@
 <h2>Ajouter un Manga</h2>
 @if (Model != null)
 {
-    using (Html.BeginForm())
+    using (Html.BeginForm("Ajouter","Manga", FormMethod.Post))
     {
         @Html.AntiForgeryToken()
         <div class="form-horizontal">
             <hr />
-            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
             <div class="form-group">
-                <label class="control-label col-md-2">Id Manga</label>
+                <label class="control-label col-md-2">Titre du Manga</label>
                 <div class="col-md-10">
-                    <input name="Id_manga" type="HIDDEN"  id="Id_manga" />
+                    <input name="Titre_manga" type="text" class="form-control" id="Titre_manga" />
                 </div>
             </div>
 
             <div class="form-group">
-                <label class="control-label col-md-2">Id dessinateur</label>
+                <label class="control-label col-md-2">Nom du dessinateur</label>
                 <div class="col-md-10">
-                    <input name="Id_dessinateur" type="text" class="form-control" id="Id_dessinateur" />
+                    <input name="Nom_dessinateur" type="text" class="form-control" id="Nom_dessinateur" />
                 </div>
             </div>
 
             <div class="form-group">
-                <label class="control-label col-md-2">Id Scénariste</label>
+                <label class="control-label col-md-2">Nom du Scénariste</label>
                 <div class="col-md-10">
-                    <input name="Id_scenariste" type="text" class="form-control" id="Id_scenariste" />
+                    <input name="Nom_scenariste" type="text" class="form-control" id="Nom_scenariste" />
                 </div>
             </div>
 
@@ -39,12 +38,6 @@
                 <label class="control-label col-md-2">Prix du manga</label>
                 <div class="col-md-10">
                     <input name="Prix" type="text" class="form-control" id="Prix" />
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="control-label col-md-2">titre du manga</label>
-                <div class="col-md-10">
-                    <input name="Titre" type="text" class="form-control" id="Titre" />
                 </div>
             </div>
 
@@ -64,13 +57,17 @@
             <div class="form-group">
                 <label class="control-label col-md-2">Genre du manga</label>
                 <div class="col-md-10">
-                    <input name="Id_genre" type="text" class="form-control" id="ID Genre" />
-                </div>
+                    <select name="Id_genre" type="text" class="form-control" id="Id_genre">
+                        @foreach (DataRow dataRow in Model.Rows)
+                        {
+                            <option value="@dataRow.ItemArray[0]">@dataRow.ItemArray[1]</option>
+                        }
+                    </select>
+                  </div>
             </div>
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" value="Enregistrer" class="btn btn-primary" />
-
+                    <input type="submit" value="Ajouter" class="btn btn-primary" />
                 </div>
             </div>
         </div>

@@ -74,20 +74,59 @@ namespace Webmanga.Controllers
 
         public ActionResult Ajouter()
         {
+            System.Data.DataTable genres = null;
+            //System.Data.DataTable scenaristes = null;
+            //System.Data.DataTable dessinateurs = null;
             try
             {
-                System.Data.DataTable genres = ServiceGenre.GetGenre();
-                return View();
+                genres = ServiceGenre.GetGenre();
+               // dessinateurs = ServiceDessinateur.GetDessinateur();
+               // scenaristes = ServiceScenariste.GetScenariste();
             }
             catch (MonException e)
             {
                 return HttpNotFound();
             }
+
+            return View(genres);
         }
 
         [HttpPost]
-        public ActionResult Ajouter(Manga unM){
-        
+        public ActionResult Ajouter(FormCollection manga){
+            var nom_dessinateur = manga["Nom_dessinateur"];
+            var nom_scenariste = manga["Nom_scenariste"];
+            try
+            {
+                Scenariste s = ServiceScenariste.GetScenaristeByName(nom_scenariste);
+                if (s.Id_scenariste == -1) //On teste si le nom du scénariste est dans la base de donné
+                {
+                    s.Nom_scenariste = nom_scenariste;
+                    ServiceScenariste.AddScenariste(s);
+                    s = ServiceScenariste.GetScenaristeByName(nom_scenariste);
+                }
+
+                Dessinateur d = ServiceDessinateur.GetDessinateurByName(nom_dessinateur); //Même chose pour le dessinateur
+                if (d.Id_dessinateur == -1)
+                {
+                    d.Nom_dessinateur = nom_dessinateur;
+                    ServiceDessinateur.AddDessinateur(d);
+                    d = ServiceDessinateur.GetDessinateurByName(nom_dessinateur);
+                }
+                Manga unM = new Manga();
+                unM.Id_dessinateur = d.Id_dessinateur;
+                unM.Id_scenariste = s.Id_scenariste;
+                unM.Prix = Double.Parse(manga["Prix"]);
+                unM.Titre = manga["Titre_manga"];
+                unM.Couverture = manga["Couverture"];
+                unM.Id_genre = int.Parse(manga["Id_genre"]);
+                unM.DateParution = DateTime.Parse(manga["DateParution"]);
+                ServiceManga.AddManga(unM);
+            }
+            catch (MonException e)
+            {
+                return HttpNotFound();
+            }
+            return View("Index");
         }
 
     }
