@@ -29,6 +29,47 @@ namespace Webmanga.Controllers
             return View(mesMangas);
         }
 
+        public ActionResult Rechercher()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Recherche(string choix, string input)
+        {
+            input = input.ToUpper();
+            string table_name = "";
+            string critere = "";
+            if (choix == "titre") { 
+                table_name = "manga";
+                critere = "titre";
+            }
+            if (choix == "dessinateur") { 
+                table_name = "dessinateur";
+                critere = "nom_dessinateur";
+            }
+            if (choix == "genre")
+            {
+                table_name = "genre";
+                critere = "lib_genre";
+            }
+            if (choix == "scenariste")
+            {
+                table_name = "scenariste";
+                critere = "nom_scenariste";
+            }
+            System.Data.DataTable mesMangas = null;
+            try
+            {
+                mesMangas = ServiceManga.SearchManga(table_name, critere, input);
+            }
+            catch (MonException e)
+            {
+                ModelState.AddModelError("Erreur", "Erreur lors de la récupération des mangas : " + e.Message);
+            }
+            return View(mesMangas);
+        }
+
         // GET: Commande/Edit/5
         public ActionResult Modifier(string id)
         {

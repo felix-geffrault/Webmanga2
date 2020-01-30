@@ -111,5 +111,26 @@ namespace Webmanga.Models.Dao
                 throw erreur;
             }
         }
+
+        public static DataTable SearchManga(string table_name, string critere,string recherche)
+        {
+            DataTable mesMangas;
+            Serreurs er = new Serreurs("Erreur sur lecture des Mangas.", "Manga.getManags()");
+            try
+            {
+                String mysql = "Select  id_manga,lib_genre,nom_dessinateur,nom_scenariste,dateParution,prix,couverture ";
+                mysql += " from Manga join genre on   manga.id_genre  = genre.id_genre ";
+                mysql += " join   dessinateur  on  manga.id_dessinateur  =  dessinateur.id_dessinateur";
+                mysql += " join   scenariste   on  manga.id_scenariste   = scenariste.id_scenariste ";
+                mysql += " where " + table_name + "." + critere + " = " +"'"+ recherche +"'";
+                mesMangas = DBInterface.Lecture(mysql, er);
+
+                return mesMangas;
+            }
+            catch (MonException e)
+            {
+                throw new MonException(er.MessageUtilisateur(), er.MessageApplication(), e.Message);
+            }
+        }
     }
 }

@@ -1,0 +1,71 @@
+﻿@model System.Data.DataTable
+@using System.Data;
+
+@{
+    ViewBag.Title = "Recherche";
+    Layout = "~/Views/Shared/_LayoutManga.cshtml";
+}
+
+@if (Model != null)
+{<div class="container">
+        <div class="col-md-8 col-sm-8">
+            <div class="blanc">
+                <h1>Résultat de la recherche </h1>
+            </div>
+
+            <table class="table table-bordered table-striped table-responsive">
+                <thead>
+                    <tr>
+                        <th> ID Manga</th>
+                        <th> Nom Genre</th>
+                        <th> Nom Dessinateur</th>
+                        <th>Nom Scénariste</th>
+                        <th>Date Parution </th>
+                        <th>Prix</th>
+                        <th>Couverture</th>
+                        @if ((string)@Session["role"] == "admin")
+                        {
+                            <th style="width:80px">Modifier</th>
+                            <th style="width:80px">Supprimer</th>
+                        }
+                    </tr>
+                </thead>
+                @foreach (DataRow dataRow in Model.Rows)
+                {
+                    <tr>
+                        @for (int i = 0; i < dataRow.ItemArray.Length - 1; i++)
+                        {
+                            <td>
+
+                                @dataRow.ItemArray[i].ToString()
+
+                            </td>
+
+                        }
+
+                        <td>
+                            <img src="~/images/@dataRow.ItemArray[6]" alt="Image de la couveture" />
+                        </td>
+                        @if ((string)@Session["role"] == "admin")
+                        {
+                            <td style="text-align:center;">
+                                <span>
+                                    @Html.ActionLink("  ", "Modifier", "Manga", new { id = dataRow[0] }, new { @class = "btn btn-default btn-primary glyphicon glyphicon glyphicon-pencil" })
+                                </span>
+                            </td>
+                            <td style="text-align:center;">
+                                <span>
+                                    @Html.ActionLink("  ", "Supprimer", "Manga", new { id = dataRow[0] }, new { @class = "btn btn-default btn-primary glyphicon glyphicon glyphicon-remove", onclick = "return confirm('Etes vous sur de vouloir supprimer ce manga ?');" })
+                                </span>
+                            </td>
+                        }
+                    </tr>
+                 }
+            </table>
+        </div>
+    </div>
+}
+else
+{
+    <p>Aucun résultat trouvé</p>
+}

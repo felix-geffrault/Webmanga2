@@ -47,7 +47,7 @@
                             <li class="dropdown-header">Fiches</li>
                             <li role="separator" class="divider"></li>
                             <li>@Html.ActionLink("Liste des Mangas", "Index", "Manga")</li>
-                            <li>@Html.ActionLink("Manga par genre", "Genre", "Manga")</li>
+                            <li>@Html.ActionLink("Rechercher manga", "Rechercher", "Manga")</li>
                         </ul>
                     </li>
                     @if ( (string)@Session["role"] == "admin" )
