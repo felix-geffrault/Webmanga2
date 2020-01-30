@@ -78,6 +78,7 @@ namespace Webmanga.Models.Dao
         /// <param name="unM"></param>
         public static void UpdateManga(Manga unM)
         {
+
             Serreurs er = new Serreurs("Erreur sur l'écriture d'un manga.", "ServiceManga.update()");
             String requete = "UPDATE Manga SET " +
                                   "id_scenariste = " + unM.Id_scenariste +
@@ -114,17 +115,31 @@ namespace Webmanga.Models.Dao
 
         public static void AddManga(Manga unM){
             Serreurs er = new Serreurs("Erreur sur l'ajout d'un manga.", "ServiceManga.AddManga()");
+            String prix = unM.Prix.ToString().Replace(",", ".");
             String requete = "INSERT INTO manga (id_scenariste, id_dessinateur, id_genre, titre, Prix, dateParution, couverture) VALUES ( " +
                                   unM.Id_scenariste +
                                   ", " + unM.Id_dessinateur +
                                   ", '" + +unM.Id_genre + "'" +
                                   ", '" + unM.Titre + "'" +
-                                  ", " + unM.Prix +
+                                  ", " + prix +
                                   ", '" + FonctionsUtiles.DateToString(unM.DateParution) + "'" +
                                   ", '" + unM.Couverture + "' )";
             try
             {
                 DBInterface.Insertion_Donnees(requete);
+            }
+            catch (MonException erreur)
+            {
+                throw erreur;
+            }
+        }
+
+        public static void IncreasePrix(Double augm)
+        {
+            String augmenter = augm.ToString().Replace(",", ".");
+            try
+            {
+                DBInterface.Appele_AugmentationPrix(augm);
             }
             catch (MonException erreur)
             {

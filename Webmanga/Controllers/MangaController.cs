@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using Webmanga.Models.MesExceptions;
 using Webmanga.Models.Metier;
 using Webmanga.Models.Dao;
+using System.Globalization;
 
 namespace Webmanga.Controllers
 {
@@ -19,7 +20,7 @@ namespace Webmanga.Controllers
 
             try
             {
-                mesMangas= ServiceManga.GetManga();
+                mesMangas = ServiceManga.GetManga();
             }
             catch (MonException e)
             {
@@ -80,8 +81,8 @@ namespace Webmanga.Controllers
             try
             {
                 genres = ServiceGenre.GetGenre();
-               // dessinateurs = ServiceDessinateur.GetDessinateur();
-               // scenaristes = ServiceScenariste.GetScenariste();
+                // dessinateurs = ServiceDessinateur.GetDessinateur();
+                // scenaristes = ServiceScenariste.GetScenariste();
             }
             catch (MonException e)
             {
@@ -92,9 +93,10 @@ namespace Webmanga.Controllers
         }
 
         [HttpPost]
-        public ActionResult Ajouter(FormCollection manga){
-            var nom_dessinateur = manga["Nom_dessinateur"];
-            var nom_scenariste = manga["Nom_scenariste"];
+        public ActionResult Ajouter(FormCollection manga)
+        {
+            var nom_dessinateur = manga["Nom_dessinateur"].ToUpper();
+            var nom_scenariste = manga["Nom_scenariste"].ToUpper();
             try
             {
                 Scenariste s = ServiceScenariste.GetScenaristeByName(nom_scenariste);
@@ -115,7 +117,9 @@ namespace Webmanga.Controllers
                 Manga unM = new Manga();
                 unM.Id_dessinateur = d.Id_dessinateur;
                 unM.Id_scenariste = s.Id_scenariste;
-                unM.Prix = Double.Parse(manga["Prix"]);
+                String prix = manga["Prix"];
+                prix = prix.Replace(".", ",");
+                unM.Prix = Double.Parse(prix);
                 unM.Titre = manga["Titre_manga"];
                 unM.Couverture = manga["Couverture"];
                 unM.Id_genre = int.Parse(manga["Id_genre"]);
@@ -126,8 +130,21 @@ namespace Webmanga.Controllers
             {
                 return HttpNotFound();
             }
-            return View("Index");
+            return RedirectToAction("Index", "Manga");
         }
 
+        public ActionResult Augmenter()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Augmenter(String ratio)
+        {
+            Double augm = (int) Double.Parse(ratio);
+            augm = 1 + augm/100;
+            ServiceManga.IncreasePrix(augm);
+            return RedirectToAction("Index", "Manga");
+        }
     }
 }
