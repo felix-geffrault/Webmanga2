@@ -34,10 +34,35 @@ namespace Webmanga.Models.Dao
             }
         }
 
+        public static Dessinateur GetDessinateurByName(String nom_dessinateur)
+        {
+            DataTable dt;
+            Serreurs er = new Serreurs("Erreur sur lecture du Dessinateur.", "Dessinateur.GetDessinateurByName()");
+            try
+            {
+                String mysql = "Select  * ";
+                mysql += " from dessinateur WHERE nom_dessinateur = '" + nom_dessinateur +"'";
+                dt = DBInterface.Lecture(mysql, er);
+                if (dt.IsInitialized && dt.Rows.Count > 0)
+                {
+                    DataRow dataRow = dt.Rows[0];
+                    Dessinateur d = new Dessinateur(int.Parse(dataRow[0].ToString()), dataRow[1].ToString(), dataRow[2].ToString());
+                    return d;
+                }
+                else
+                    return new Dessinateur(-1,"","");
+               
+            }
+            catch (MonException e)
+            {
+                throw new MonException(er.MessageUtilisateur(), er.MessageApplication(), e.Message);
+            }
+        }
+
         public static void AddDessinateur(Dessinateur d)
         {
             Serreurs er = new Serreurs("Erreur sur l'ajout d'un dessinateur.", "ServiceDessinateur.AddDessinateur()");
-            String requete = "INSERT INTO dessinateur VALUES ( " + d.Nom_dessinateur + " , " + d.Prenom_dessinateur;
+            String requete = "INSERT INTO dessinateur ( nom_dessinateur, prenom_dessinateur ) VALUES ( '" + d.Nom_dessinateur + "' , '" + d.Prenom_dessinateur +"' )";
             try
             {
                 DBInterface.Insertion_Donnees(requete);

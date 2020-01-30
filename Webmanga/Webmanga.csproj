@@ -212,7 +212,8 @@
     <Content Include="Views\Manga\Modifier.cshtml" />
     <Content Include="Views\Connexion\Connexion.cshtml" />
     <Content Include="Views\Manga\Ajouter.cshtml" />
-    <Content Include="Views\Manga\Rechercher.cshtml" />
+	<Content Include="Views\Manga\Augmenter.cshtml" />
+	<Content Include="Views\Manga\Rechercher.cshtml" />
     <Content Include="Views\Manga\Recherche.cshtml" />
   </ItemGroup>
   <ItemGroup>

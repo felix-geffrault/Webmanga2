@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using Webmanga.Models.MesExceptions;
 using Webmanga.Models.Metier;
 using Webmanga.Models.Dao;
+using System.Globalization;
 
 namespace Webmanga.Controllers
 {
@@ -19,7 +20,7 @@ namespace Webmanga.Controllers
 
             try
             {
-                mesMangas= ServiceManga.GetManga();
+                mesMangas = ServiceManga.GetManga();
             }
             catch (MonException e)
             {
@@ -112,20 +113,79 @@ namespace Webmanga.Controllers
                 return HttpNotFound();
             }
         }
-        /*public ActionResult Ajouter()
+
+        public ActionResult Ajouter()
         {
-            Manga unManga = null;
+            System.Data.DataTable genres = null;
+            //System.Data.DataTable scenaristes = null;
+            //System.Data.DataTable dessinateurs = null;
             try
             {
-                unManga = ServiceManga.Get();
-                return View();
+                genres = ServiceGenre.GetGenre();
+                // dessinateurs = ServiceDessinateur.GetDessinateur();
+                // scenaristes = ServiceScenariste.GetScenariste();
             }
             catch (MonException e)
             {
                 return HttpNotFound();
             }
-        }*/
 
+            return View(genres);
+        }
 
+        [HttpPost]
+        public ActionResult Ajouter(FormCollection manga)
+        {
+            var nom_dessinateur = manga["Nom_dessinateur"].ToUpper();
+            var nom_scenariste = manga["Nom_scenariste"].ToUpper();
+            try
+            {
+                Scenariste s = ServiceScenariste.GetScenaristeByName(nom_scenariste);
+                if (s.Id_scenariste == -1) //On teste si le nom du scénariste est dans la base de donné
+                {
+                    s.Nom_scenariste = nom_scenariste;
+                    ServiceScenariste.AddScenariste(s);
+                    s = ServiceScenariste.GetScenaristeByName(nom_scenariste);
+                }
+
+                Dessinateur d = ServiceDessinateur.GetDessinateurByName(nom_dessinateur); //Même chose pour le dessinateur
+                if (d.Id_dessinateur == -1)
+                {
+                    d.Nom_dessinateur = nom_dessinateur;
+                    ServiceDessinateur.AddDessinateur(d);
+                    d = ServiceDessinateur.GetDessinateurByName(nom_dessinateur);
+                }
+                Manga unM = new Manga();
+                unM.Id_dessinateur = d.Id_dessinateur;
+                unM.Id_scenariste = s.Id_scenariste;
+                String prix = manga["Prix"];
+                prix = prix.Replace(".", ",");
+                unM.Prix = Double.Parse(prix);
+                unM.Titre = manga["Titre_manga"];
+                unM.Couverture = manga["Couverture"];
+                unM.Id_genre = int.Parse(manga["Id_genre"]);
+                unM.DateParution = DateTime.Parse(manga["DateParution"]);
+                ServiceManga.AddManga(unM);
+            }
+            catch (MonException e)
+            {
+                return HttpNotFound();
+            }
+            return RedirectToAction("Index", "Manga");
+        }
+
+        public ActionResult Augmenter()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Augmenter(String ratio)
+        {
+            Double augm = (int) Double.Parse(ratio);
+            augm = 1 + augm/100;
+            ServiceManga.IncreasePrix(augm);
+            return RedirectToAction("Index", "Manga");
+        }
     }
 }

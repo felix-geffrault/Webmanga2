@@ -1,0 +1,25 @@
+﻿
+@{
+    ViewBag.Title = "Augmenter";
+    Layout = "~/Views/Shared/_LayoutManga.cshtml";
+}
+
+<h2>Augmenter</h2>
+@using (Html.BeginForm("Augmenter","Manga", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        <h3>De combien souathez vous augmenter les prix ?</h3>
+        <div class="form-horizontal">
+            <hr />
+            <div class="form-group">
+                <div class="col-md-10">
+                    <input name="ratio" type="text" class="form-control" id="ratio" /> <label class="control-label col-md-2"> %</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Augmenter" class="btn btn-primary" />
+                </div>
+            </div>
+        </div>
+    }

@@ -78,6 +78,7 @@ namespace Webmanga.Models.Dao
         /// <param name="unM"></param>
         public static void UpdateManga(Manga unM)
         {
+
             Serreurs er = new Serreurs("Erreur sur l'écriture d'un manga.", "ServiceManga.update()");
             String requete = "UPDATE Manga SET " +
                                   "id_scenariste = " + unM.Id_scenariste +
@@ -97,7 +98,7 @@ namespace Webmanga.Models.Dao
                 throw erreur;
             }
         }
-
+        
         public static void DelManga(String id)
         {
             Serreurs er = new Serreurs("Erreur sur la suppression d'un manga.", "ServiceManga.DelManga()");
@@ -111,8 +112,41 @@ namespace Webmanga.Models.Dao
                 throw erreur;
             }
         }
+        public static void AddManga(Manga unM)
+        {
+            Serreurs er = new Serreurs("Erreur sur l'ajout d'un manga.", "ServiceManga.AddManga()");
+            String prix = unM.Prix.ToString().Replace(",", ".");
+            String requete = "INSERT INTO manga (id_scenariste, id_dessinateur, id_genre, titre, Prix, dateParution, couverture) VALUES ( " +
+                                  unM.Id_scenariste +
+                                  ", " + unM.Id_dessinateur +
+                                  ", '" + +unM.Id_genre + "'" +
+                                  ", '" + unM.Titre + "'" +
+                                  ", " + prix +
+                                  ", '" + FonctionsUtiles.DateToString(unM.DateParution) + "'" +
+                                  ", '" + unM.Couverture + "' )";
+            try
+            {
+                DBInterface.Insertion_Donnees(requete);
+            }
+            catch (MonException erreur)
+            {
+                throw erreur;
+            }
+        }
 
-        public static DataTable SearchManga(string table_name, string critere,string recherche)
+        public static void IncreasePrix(Double augm)
+        {
+            String augmenter = augm.ToString().Replace(",", ".");
+            try
+            {
+                DBInterface.Appele_AugmentationPrix(augm);
+            }
+            catch (MonException erreur)
+            {
+                throw erreur;
+            }
+        }
+        public static DataTable SearchManga(string table_name, string critere, string recherche)
         {
             DataTable mesMangas;
             Serreurs er = new Serreurs("Erreur sur lecture des Mangas.", "Manga.getManags()");
@@ -122,7 +156,7 @@ namespace Webmanga.Models.Dao
                 mysql += " from Manga join genre on   manga.id_genre  = genre.id_genre ";
                 mysql += " join   dessinateur  on  manga.id_dessinateur  =  dessinateur.id_dessinateur";
                 mysql += " join   scenariste   on  manga.id_scenariste   = scenariste.id_scenariste ";
-                mysql += " where " + table_name + "." + critere + " = " +"'"+ recherche +"'";
+                mysql += " where " + table_name + "." + critere + " = " + "'" + recherche + "'";
                 mesMangas = DBInterface.Lecture(mysql, er);
 
                 return mesMangas;
