@@ -159,6 +159,7 @@
     <Compile Include="Models\Dao\ServiceUtilisateur.cs" />
     <Compile Include="Models\MesExceptions\MonException.cs" />
     <Compile Include="Models\MesExceptions\Serreurs.cs" />
+    <Compile Include="Models\Metier\Recherche.cs" />
     <Compile Include="Models\Metier\Manga.cs" />
     <Compile Include="Models\Metier\Utilisateur.cs" />
     <Compile Include="Models\Persistance\Connexion.cs" />
@@ -211,6 +212,9 @@
     <Content Include="Views\Manga\Modifier.cshtml" />
     <Content Include="Views\Connexion\Connexion.cshtml" />
     <Content Include="Views\Manga\Ajouter.cshtml" />
+	<Content Include="Views\Manga\Augmenter.cshtml" />
+	<Content Include="Views\Manga\Rechercher.cshtml" />
+    <Content Include="Views\Manga\Recherche.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -87,6 +87,28 @@ namespace Webmanga.Models.Persistance
                 throw new MonException(uneException.Message, "Insertion", "SQL");
             }
         }
+
+        public static void Appele_AugmentationPrix(Double augm)
+        {
+            MySqlConnection cnx = null;
+            try
+            {
+                cnx = Connexion.getInstance().getConnexion();
+                MySqlTransaction OleTrans = cnx.BeginTransaction();
+                MySqlCommand OleCmd = new MySqlCommand();
+                OleCmd = cnx.CreateCommand();
+                OleCmd.Transaction = OleTrans;
+                OleCmd.CommandType = CommandType.StoredProcedure;
+                OleCmd.CommandText = "articles_augm_pri";
+                OleCmd.Parameters.Add(new MySqlParameter("@augmente", augm));
+                OleCmd.ExecuteNonQuery();
+                OleTrans.Commit();
+            }
+            catch (MySqlException uneException)
+            {
+                throw new MonException(uneException.Message, "Insertion", "SQL");
+            }
+        }
     }
 }
     

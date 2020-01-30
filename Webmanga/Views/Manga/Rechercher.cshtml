@@ -1,0 +1,39 @@
+﻿@using Webmanga.Models.Metier.Recherche
+@{
+    ViewBag.Title = "Rechercher";
+    Layout = "~/Views/Shared/_LayoutManga.cshtml";
+}
+
+@using (Html.BeginForm("Recherche","Manga", FormMethod.Post))
+{ 
+    <h2>Rechercher</h2>
+    @Html.AntiForgeryToken()
+    <div class="form-inline">
+        <hr />
+        <div class="col-md-10">
+            <div class="form-group">
+                <select class="form-control" name="choix" required>
+                    <option value="">Rechercher par</option>
+                    <option value="titre">Titre</option>
+                    <option value="dessinateur">Dessinateur</option>
+                    <option value="genre">Genre</option>
+                    <option value="scenariste">Scenariste</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="text" name="input" class="form-control" placeholder="Rechercher..." required/>
+               
+
+                <button type="submit" value="Rechercher" class="btn btn-default">
+                    <i class="glyphicon glyphicon-search"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+}
+
+
+
+
+
+
